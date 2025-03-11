@@ -3,23 +3,33 @@ import org.junit.jupiter.api.*;
 import java.util.List;
 
 class WalletTest {
+    private static Wallet wallet;
+
+    @BeforeAll
+    static void setup() {
+        System.out.println("Koneksi ke server...");
+    }
+
+    @BeforeEach
+    public void setupMethod() {
+        wallet = new Wallet();
+        wallet.setOwner("Creator");
+    }
+
     @Test
     void testEmptyWallet() {
-        Wallet wallet = new Wallet();
-        Assertions.assertNull(wallet.getOwner(),"Pemilik dompet awal seharusnya Null");
+        Assertions.assertSame("Creator", wallet.getOwner(),"Pemilik dompet awal seharusnya adalah Creator");
         Assertions.assertTrue(wallet.getCards().isEmpty(), "Dompet baru seharusnya tidak memiliki kartu");
     }
 
     @Test
     void testSetOwner() {
-        Wallet wallet = new Wallet();
         wallet.setOwner("Gio");
         Assertions.assertSame("Gio", wallet.getOwner(), "Pemilik dompet seharusnya adalah Gio");
     }
 
     @Test
     void testAddCard() {
-        Wallet wallet = new Wallet();
         wallet.addCard("Visa");
         wallet.addCard("MasterCard");
 
@@ -30,14 +40,12 @@ class WalletTest {
 
     @Test
     void testAddMoney() {
-        Wallet wallet = new Wallet();
         wallet.addMoney(20000,500);
         Assertions.assertEquals(20500, wallet.getTotalMoney(), "Total uang seharusnya merupakan jumlah uang cash dan coin");
     }
 
     @Test
     void testWithDrawMoney() {
-        Wallet wallet = new Wallet();
         wallet.addMoney(40000,1000);
         wallet.addMoney(21000,200);
         Assertions.assertTrue(wallet.withdrawMoney(50000, 500), "Penarikan seharusnya berhasil karena nominal kurang dari atau sama dengan saldo");
@@ -46,8 +54,18 @@ class WalletTest {
 
     @Test
     void testTotalMoney() {
-        Wallet wallet = new Wallet();
         wallet.addMoney(10000,500);
         Assertions.assertEquals(10500, wallet.getTotalMoney(), "Total uang seharusnya merupakan jumlah uang cash dan coin");
+    }
+
+    @AfterEach
+    void cleanupMethod() {
+        wallet.setOwner("");
+    }
+
+    @AfterAll
+    static void cleanup() {
+        wallet = null;
+        System.out.println("Menutup koneksi...");
     }
 }
