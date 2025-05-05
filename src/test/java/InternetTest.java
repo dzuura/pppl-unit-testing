@@ -13,34 +13,29 @@ public class InternetTest {
     static void setup() {
         driver = new ChromeDriver();
         driver.manage().window().maximize();
-    }
-
-//    @AfterEach
-//    void tearDown() {
-//        driver.navigate().back();
-//    }
-
-    @AfterAll
-    static void cleanup() {
-        driver.quit();
-        driver = null;
+        driver.get("https://the-internet.herokuapp.com");
     }
 
     @Test
     @DisplayName("Hover on First Image")
     void testHoverFirstImage() {
-        driver.get("https://the-internet.herokuapp.com/hovers");
-        WebElement firstImage = driver.findElement(By.xpath("(//div[@class='figure'])[1]/img"));
+        // Navigasi
+        driver.findElement(By.linkText("Hovers")).click();
+        // Locator
+        WebElement firstImage = driver.findElement(By.cssSelector(".figure img"));
         Actions actions = new Actions(driver);
         actions.moveToElement(firstImage).perform();
-        WebElement nameText = driver.findElement(By.xpath("(//div[@class='figure'])[1]//h5"));
+        // Locator
+        WebElement nameText = driver.findElement(By.className("figcaption")).findElement(By.tagName("h5"));
         Assertions.assertEquals("name: user1", nameText.getText());
     }
 
     @Test
     @DisplayName("Drag and Drop")
     void testDragAndDrop() {
-        driver.get("https://the-internet.herokuapp.com/drag_and_drop");
+        // Navigasi
+        driver.findElement(By.linkText("Drag and Drop")).click();
+        // Locator
         WebElement source = driver.findElement(By.id("column-a"));
         WebElement target = driver.findElement(By.id("column-b"));
         Actions actions = new Actions(driver);
@@ -52,10 +47,23 @@ public class InternetTest {
     @Test
     @DisplayName("Key Presses with SHIFT")
     void testKeyPresses() {
-        driver.get("https://the-internet.herokuapp.com/key_presses");
+        // Navigasi
+        driver.findElement(By.linkText("Key Presses")).click();
+        // Locator
         WebElement inputField = driver.findElement(By.id("target"));
         inputField.sendKeys(Keys.SHIFT);
         WebElement resultText = driver.findElement(By.id("result"));
         Assertions.assertEquals("You entered: SHIFT", resultText.getText());
+    }
+
+    @AfterEach
+    void tearDown() {
+        driver.navigate().back();
+    }
+
+    @AfterAll
+    static void cleanup() {
+        driver.quit();
+        driver = null;
     }
 }
