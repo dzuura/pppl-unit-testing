@@ -12,30 +12,24 @@ public class InternetTest {
     @BeforeAll
     static void setup() {
         driver = new ChromeDriver();
-        driver.manage().window().maximize();
         driver.get("https://the-internet.herokuapp.com");
     }
 
     @Test
-    @DisplayName("Hover on First Image")
     void testHoverFirstImage() {
-        // Navigasi
         driver.findElement(By.linkText("Hovers")).click();
-        // Locator
+
         WebElement firstImage = driver.findElement(By.cssSelector(".figure img"));
         Actions actions = new Actions(driver);
         actions.moveToElement(firstImage).perform();
-        // Locator
         WebElement nameText = driver.findElement(By.className("figcaption")).findElement(By.tagName("h5"));
         Assertions.assertEquals("name: user1", nameText.getText());
     }
 
     @Test
-    @DisplayName("Drag and Drop")
     void testDragAndDrop() {
-        // Navigasi
         driver.findElement(By.linkText("Drag and Drop")).click();
-        // Locator
+
         WebElement source = driver.findElement(By.id("column-a"));
         WebElement target = driver.findElement(By.id("column-b"));
         Actions actions = new Actions(driver);
@@ -45,11 +39,9 @@ public class InternetTest {
     }
 
     @Test
-    @DisplayName("Key Presses with SHIFT")
     void testKeyPresses() {
-        // Navigasi
         driver.findElement(By.linkText("Key Presses")).click();
-        // Locator
+
         WebElement inputField = driver.findElement(By.id("target"));
         inputField.sendKeys(Keys.SHIFT);
         WebElement resultText = driver.findElement(By.id("result"));

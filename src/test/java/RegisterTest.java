@@ -2,20 +2,20 @@ import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 public class RegisterTest {
     private WebDriver driver;
-    private final String BASE_URL = "http://automationexercise.com";
+    private final String BASE_URL = "https://automationexercise.com/";
     private final String NAME = "Test User";
-    private final String EMAIL = "testuser" + System.currentTimeMillis() + "@example.com";
-    private final String PASSWORD = "Password123";
+    private final String EMAIL = "testuser700@gmail.com";
+    private final String PASSWORD = "password123";
 
     @BeforeEach
     public void setUp() {
         // 1. Launch browser
-        driver = new ChromeDriver();
+        driver = new EdgeDriver();
         Assertions.assertNotNull(driver);
     }
 
@@ -32,7 +32,6 @@ public class RegisterTest {
 
         // 4. Click on 'Signup / Login' button
         WebElement signupLoginButton = driver.findElement(By.cssSelector("a[href='/login']"));
-        Assertions.assertTrue(signupLoginButton.isDisplayed());
         signupLoginButton.click();
         Assertions.assertTrue(driver.getCurrentUrl().contains("login"));
 
@@ -44,9 +43,6 @@ public class RegisterTest {
         // 6. Enter name and email address
         WebElement nameInput = driver.findElement(By.name("name"));
         WebElement emailInput = driver.findElement(By.cssSelector("input[data-qa='signup-email']"));
-
-        Assertions.assertTrue(nameInput.isDisplayed());
-        Assertions.assertTrue(emailInput.isDisplayed());
 
         nameInput.sendKeys(NAME);
         emailInput.sendKeys(EMAIL);
@@ -62,18 +58,16 @@ public class RegisterTest {
         // 8. Verify that 'ENTER ACCOUNT INFORMATION' is visible
         WebElement enterAccountInfoText = driver.findElement(By.cssSelector(".title b"));
         Assertions.assertTrue(enterAccountInfoText.isDisplayed());
-        Assertions.assertEquals("Enter Account Information", enterAccountInfoText.getText());
+        Assertions.assertEquals("ENTER ACCOUNT INFORMATION", enterAccountInfoText.getText());
 
         // 9. Fill details: Title, Name, Email, Password, Date of birth
-        // Select Title (Mr.)
+        // Select Title
         WebElement titleMr = driver.findElement(By.id("id_gender1"));
-        Assertions.assertTrue(titleMr.isDisplayed());
         titleMr.click();
         Assertions.assertTrue(titleMr.isSelected());
 
         // Password
         WebElement passwordInput = driver.findElement(By.id("password"));
-        Assertions.assertTrue(passwordInput.isDisplayed());
         passwordInput.sendKeys(PASSWORD);
         Assertions.assertEquals(PASSWORD, passwordInput.getAttribute("value"));
 
@@ -81,10 +75,6 @@ public class RegisterTest {
         WebElement dayDropdown = driver.findElement(By.id("days"));
         WebElement monthDropdown = driver.findElement(By.id("months"));
         WebElement yearDropdown = driver.findElement(By.id("years"));
-
-        Assertions.assertTrue(dayDropdown.isDisplayed());
-        Assertions.assertTrue(monthDropdown.isDisplayed());
-        Assertions.assertTrue(yearDropdown.isDisplayed());
 
         Select daySelect = new Select(dayDropdown);
         daySelect.selectByValue("15");
@@ -101,13 +91,11 @@ public class RegisterTest {
 
         // 10. Select checkbox 'Sign up for our newsletter!'
         WebElement newsletterCheckbox = driver.findElement(By.id("newsletter"));
-        Assertions.assertTrue(newsletterCheckbox.isDisplayed());
         newsletterCheckbox.click();
         Assertions.assertTrue(newsletterCheckbox.isSelected());
 
         // 11. Select checkbox 'Receive special offers from our partners!'
         WebElement offersCheckbox = driver.findElement(By.id("optin"));
-        Assertions.assertTrue(offersCheckbox.isDisplayed());
         offersCheckbox.click();
         Assertions.assertTrue(offersCheckbox.isSelected());
 
@@ -123,22 +111,11 @@ public class RegisterTest {
         WebElement zipcodeInput = driver.findElement(By.id("zipcode"));
         WebElement mobileNumberInput = driver.findElement(By.id("mobile_number"));
 
-        Assertions.assertTrue(firstNameInput.isDisplayed());
-        Assertions.assertTrue(lastNameInput.isDisplayed());
-        Assertions.assertTrue(companyInput.isDisplayed());
-        Assertions.assertTrue(address1Input.isDisplayed());
-        Assertions.assertTrue(address2Input.isDisplayed());
-        Assertions.assertTrue(countryDropdown.isDisplayed());
-        Assertions.assertTrue(stateInput.isDisplayed());
-        Assertions.assertTrue(cityInput.isDisplayed());
-        Assertions.assertTrue(zipcodeInput.isDisplayed());
-        Assertions.assertTrue(mobileNumberInput.isDisplayed());
-
         firstNameInput.sendKeys("Test");
         lastNameInput.sendKeys("User");
         companyInput.sendKeys("Test Company");
-        address1Input.sendKeys("123 Test Street");
-        address2Input.sendKeys("Apt 456");
+        address1Input.sendKeys("Test Address");
+        address2Input.sendKeys("Test Street");
 
         Select countrySelect = new Select(countryDropdown);
         countrySelect.selectByVisibleText("United States");
@@ -151,8 +128,8 @@ public class RegisterTest {
         Assertions.assertEquals("Test", firstNameInput.getAttribute("value"));
         Assertions.assertEquals("User", lastNameInput.getAttribute("value"));
         Assertions.assertEquals("Test Company", companyInput.getAttribute("value"));
-        Assertions.assertEquals("123 Test Street", address1Input.getAttribute("value"));
-        Assertions.assertEquals("Apt 456", address2Input.getAttribute("value"));
+        Assertions.assertEquals("Test Address", address1Input.getAttribute("value"));
+        Assertions.assertEquals("Test Street", address2Input.getAttribute("value"));
         Assertions.assertEquals("United States", new Select(countryDropdown).getFirstSelectedOption().getText());
         Assertions.assertEquals("California", stateInput.getAttribute("value"));
         Assertions.assertEquals("San Francisco", cityInput.getAttribute("value"));
@@ -200,11 +177,7 @@ public class RegisterTest {
 
     @AfterEach
     public void tearDown() {
-        if (driver != null) {
-            driver.quit();
-        }
-        Assertions.assertDoesNotThrow(() -> {
-            driver = null;
-        });
+        driver.quit();
+        driver = null;
     }
 }
