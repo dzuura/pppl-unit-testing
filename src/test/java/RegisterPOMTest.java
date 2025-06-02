@@ -1,7 +1,7 @@
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
-import page.*;
+import pages.*;
 
 public class RegisterPOMTest {
     private WebDriver driver;
