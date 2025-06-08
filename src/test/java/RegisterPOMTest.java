@@ -19,7 +19,7 @@ public class RegisterPOMTest {
     @Test
     public void testUserRegistration() {
         // Initialize page objects
-        HomePage homePage = new HomePage(driver);
+        homePage homePage = new homePage(driver);
         LoginSignupPage loginSignupPage = new LoginSignupPage(driver);
         AccountInformationPage accountInformationPage = new AccountInformationPage(driver);
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
